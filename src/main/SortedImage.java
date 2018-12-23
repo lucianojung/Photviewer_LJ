@@ -1,6 +1,7 @@
 package main;
 
 import javafx.scene.image.Image;
+
 /*
 * Subclass of Image to sort the Images with a predecessor and a successor
 * */

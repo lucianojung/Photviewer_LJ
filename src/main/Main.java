@@ -131,18 +131,6 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-
-                FadeTransition ft = new FadeTransition();
-                for(int i = 0 ; i < imageArrayList.size() ; i ++ ){
-                    setCenterImage(imageArrayList.get(i));
-                    ft.setNode(pane);
-                    ft.setDuration(new Duration(2000));
-                    ft.setFromValue(1.0);
-                    ft.setToValue(0.0);
-                    ft.setCycleCount(0);
-                    ft.setAutoReverse(true);
-                    ft.play();
-                }
             }
         });
         ///////////
