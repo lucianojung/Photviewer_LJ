@@ -1,6 +1,9 @@
 package main;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,8 +39,11 @@ public class Main extends Application {
     ScrollPane scrollPane;
     private VBox vBoxPictures;
     private Pane pane;
+    private Button buttonLeftArrow;
+    private Button buttonRightArrow;
     //others
-    private ArrayList<Image> imageArrayList;
+    private ArrayList<SortedImage> imageArrayList;
+    private SortedImage shownImage = null;
     //final components
     private final Dimension2D dimension = new Dimension2D(1000, 600);
     private final FileChooser fileChooser = new FileChooser();
@@ -89,8 +96,8 @@ public class Main extends Application {
         borderPane.setLeft(scrollPane);
         //--Bottom for Navigation--
         HBox hBoxButtons = new HBox();
-        Button buttonLeftArrow = new Button("<-");
-        Button buttonRightArrow = new Button("->");
+        buttonLeftArrow = new Button("<-");
+        buttonRightArrow = new Button("->");
         hBoxButtons.setAlignment(Pos.CENTER);
         hBoxButtons.getChildren().addAll(buttonLeftArrow, buttonRightArrow);
         borderPane.setBottom(hBoxButtons);
@@ -100,6 +107,7 @@ public class Main extends Application {
 
     }
 
+    //----------Listener----------
     private void initializeListener() {
         //Listener for Menu Item Open Files
         menuItemOpenFiles.setOnAction(event -> {
@@ -114,8 +122,53 @@ public class Main extends Application {
         menuItemExit.setOnAction(event -> System.exit(0));
 
         //Listener for Diashow
-        menuItemDiashow.setOnAction(event -> {
-            //what diashow makes...
+        /*menuItemDiashow.setOnAction(event -> {
+            Diashow diashow = new Diashow(primaryStage, imageArrayList);
+            diashow.startDiashow();
+        });*/
+        ///////////
+        menuItemDiashow.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+
+                FadeTransition ft = new FadeTransition();
+                for(int i = 0 ; i < imageArrayList.size() ; i ++ ){
+                    setCenterImage(imageArrayList.get(i));
+                    ft.setNode(pane);
+                    ft.setDuration(new Duration(2000));
+                    ft.setFromValue(1.0);
+                    ft.setToValue(0.0);
+                    ft.setCycleCount(0);
+                    ft.setAutoReverse(true);
+                    ft.play();
+                }
+            }
+        });
+        ///////////
+
+        buttonLeftArrow.setOnAction(event -> {
+            if (shownImage == null)return;                          //if no picture shown
+            else if (shownImage.getPredecessor() == null)return;    //if there is no predecessor
+            setCenterImage(shownImage.getPredecessor());
+        });
+
+        buttonRightArrow.setOnAction(event -> {
+            if (shownImage == null)return;                      //if no picture shown
+            else if (shownImage.getSuccessor() == null)return;  //if there is no successor
+            setCenterImage(shownImage.getSuccessor());
+        });
+
+        //Listener for Width Property
+        primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal != newVal)
+                setCenterImage(shownImage);     //resize Shown Image
+        });
+
+        //Listener for Height Property
+        primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal != newVal)
+                setCenterImage(shownImage);     //resize shown Image
         });
     }
 
@@ -132,29 +185,38 @@ public class Main extends Application {
             }
             System.out.println("Start loading Image from: " + imagePath);
 
-            //add new Image from Path to ArrayList
-            imageArrayList.add(new Image(imagePath,true));
+            //create new Image set ListIndex, Prodecessor and Successor and add it to ArrayList
+            SortedImage image = new SortedImage(imagePath,true);
+            image.setListIndex(imageArrayList.size());
+            if (imageArrayList.size() > 0){
+                image.setPredecessor(imageArrayList.get(image.getListIndex()-1));
+                imageArrayList.get(image.getListIndex()-1).setSuccessor(image);
+            }
+            imageArrayList.add(image);
+
             //create ImageView with new Image from ArrayList
             ImageView imageView = getImageView(imageArrayList.get(imageArrayList.size()-1),115, 86);
             vBoxPictures.getChildren().add(imageView);  //add ImageView to vBox
 
             //add Listener for ImageView
-            imageView.setOnMouseClicked(event -> {
-                ImageView imageView2 = getImageView(((ImageView)event.getSource()).getImage(), (int) pane.getWidth(), (int) pane.getHeight());
-                pane.getChildren().clear();
-                pane.getChildren().add(imageView2);
-            });
+            imageView.setOnMouseClicked(event ->
+                    setCenterImage(((ImageView)event.getSource()).getImage()));
         }
     }
 
-    private ImageView getImageView(Image image, int width, int height){
+    private void setCenterImage(Image image) {
+        ImageView imageView2 = getImageView(image, (int) pane.getWidth(), (int) pane.getHeight());
+        pane.getChildren().clear();
+        pane.getChildren().add(imageView2);
+        shownImage = (SortedImage) imageView2.getImage();         //to set the actual shown Image
+    }
+
+    private ImageView getImageView(Image image, int width, int height) {
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
         return imageView;
     }
-
-
 
     //----------getter and setter----------
 
