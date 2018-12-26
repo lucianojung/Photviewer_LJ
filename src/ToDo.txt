@@ -1,0 +1,7 @@
+ToDo:
+OPTIONAL:
+- add Optional in seperat Branch
+    - Load Images via param
+    - löschen funktion
+    - Name unter Thumnails
+    - (ausklapbare Sidebar)

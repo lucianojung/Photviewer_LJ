@@ -4,12 +4,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Dimension2D;
+
+import java.awt.*;
 
 
 public class PhotoView {
@@ -24,6 +28,7 @@ public class PhotoView {
     private MenuItem menuItemExit;
     private Menu menuDiashow;
     private MenuItem menuItemDiashow;
+    private MenuItem menuItemDiashowDuration;
     //for Thumbnaillist (LEFT)
     private ListView<ImageView> imageViewListView;
     //for CenterImage (CENTER)
@@ -42,10 +47,11 @@ public class PhotoView {
         menuItemOpenFiles = new MenuItem("Open Files");
         menuItemExit = new MenuItem("Exit");
         menuItemDiashow = new MenuItem("Start Diashow");
+        menuItemDiashowDuration = new MenuItem("Set Duration");
         menuAction = new Menu("Aktion");
         menuDiashow = new Menu("Diashow");
         menuAction.getItems().addAll(menuItemOpenFiles, menuItemExit);
-        menuDiashow.getItems().addAll(menuItemDiashow);
+        menuDiashow.getItems().addAll(menuItemDiashow, menuItemDiashowDuration);
         menuBar = new MenuBar();
         menuBar.getMenus().addAll(menuAction, menuDiashow);
         borderPane.setTop(menuBar);
@@ -87,6 +93,10 @@ public class PhotoView {
 
     public MenuItem getMenuItemDiashow() {
         return menuItemDiashow;
+    }
+
+    public MenuItem getMenuItemDiashowDuration() {
+        return menuItemDiashowDuration;
     }
 
     public Button getButtonLeftArrow() {

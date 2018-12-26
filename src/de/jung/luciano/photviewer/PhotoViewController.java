@@ -1,6 +1,9 @@
 package de.jung.luciano.photviewer;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -8,6 +11,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 public class PhotoViewController {
 
@@ -17,26 +21,35 @@ public class PhotoViewController {
     PhotoView photoView;
 
     public PhotoViewController(Model model){
+        //set model and view
         this.model = model;
         this.photoView = new PhotoView();
+        loadImages();
 
         //Listener
         photoView.getMenuItemOpenFiles().setOnAction(event -> handleOpenFiles(event));
         photoView.getMenuItemExit().setOnAction(event -> System.exit(0));
         photoView.getMenuItemDiashow().setOnAction(event -> handleDiashow(event));
+        photoView.getMenuItemDiashowDuration().setOnAction(event -> handleDiashowDuration(event));
         photoView.getButtonLeftArrow().setOnAction(event -> handleLeftArrow(event));
         photoView.getButtonRightArrow().setOnAction(event -> handleRightArrow(event));
         photoView.getImageViewListView().setOnMouseClicked(event -> handleListView(event));
     }
 
     public void show(){
-        photoView.show(model.getPrimaryStage());
+        photoView.show(model.getPrimaryStage());    //show photoView on primaryStage got from model
     }
 
+    //++++++++++++++++++++++++++++++++
+    //Event Handler
+    //++++++++++++++++++++++++++++++++
+
     private void handleOpenFiles(ActionEvent event) {
+        //get Files chosen in FileChooser
         FileChooser fileChooser = new FileChooser();
         List<File> files = fileChooser.showOpenMultipleDialog(model.getPrimaryStage());
 
+        //try to get the Image for each chosen File
         try{
             for (File file : files) {
                 String imagePath = file.toURI().toString(); //get image Path as String
@@ -49,30 +62,48 @@ public class PhotoViewController {
                 * add ImageView to List View from photoView
                 */
                 Image image = new Image(imagePath, true);
-                ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(200);
-                imageView.setFitHeight(150);
-                photoView.getImageViewListView().getItems().add(imageView);
+                model.getImages().add(image);
+                photoView.getImageViewListView().getItems().add(newImageViewForListView(image));
             }
         } catch (NullPointerException e){return;}   //it workes anyway but the nullpointer exception is not shown
+        setCenterImage(model.getImages().get(0));
     }
 
     private void handleDiashow(ActionEvent actionEvent) {
-        DiashowController diashowController = new DiashowController(model);
-        diashowController.show();
+        DiashowController diashowController = new DiashowController(model);     //give model to diashowController
+        diashowController.show();                                               //show new Scene (Diashow)
+    }
+
+    private void handleDiashowDuration(ActionEvent event) {
+        TextInputDialog inputDialog = new TextInputDialog(Long.toString(model.getDiashowDuration()));
+        inputDialog.setTitle("Diashow Duration");
+        inputDialog.setHeaderText("");
+        inputDialog.setContentText("Set the Duration of the Diashow (in millis):");
+
+        Optional<String> result = inputDialog.showAndWait();
+        if(!result.isPresent())return;
+        try{
+            model.setDiashowDuration(Long.parseLong(result.get()));
+        } catch (NumberFormatException e){
+            System.out.println(result.get() + " is Not a number");
+        }
     }
 
     private void handleLeftArrow(ActionEvent actionEvent) {
-        int index = getIndexOfImageViewCenter()-1;
-        if (index < 0)
-            index = photoView.getImageViewListView().getItems().size()-1;
+        int index = model.getIndexOfCenterImage().intValue();
+        if (index == -1)return;                 //if no Images load yet
+        else if (index <= 0)                     //first image get previous => last image
+            index = photoView.getImageViewListView().getItems().size();
+        model.getIndexOfCenterImage().set(--index);
         setCenterImage(photoView.getImageViewListView().getItems().get(index).getImage());
     }
 
     private void handleRightArrow(ActionEvent actionEvent) {
-        int index = getIndexOfImageViewCenter()+1;
-        if (index >= photoView.getImageViewListView().getItems().size())
-            index = 0;
+        int index = model.getIndexOfCenterImage().intValue();
+        if (index == -1)return;                                                  //if no Images load yet
+        else if (index >= photoView.getImageViewListView().getItems().size()-1)   //last image get next => first image
+            index = -1;
+        model.getIndexOfCenterImage().set(++index);
         setCenterImage(photoView.getImageViewListView().getItems().get(index).getImage());
     }
 
@@ -80,22 +111,36 @@ public class PhotoViewController {
         setCenterImage(photoView.getImageViewListView().getSelectionModel().getSelectedItem().getImage());
     }
 
-    private int getIndexOfImageViewCenter(){
-        if (photoView.getCenterPane().getChildren().get(0) == null) return -1;
-        int index = 0;
+    //+++++++++++++++++++++++++++++
+    //other Methods
+    //+++++++++++++++++++++++++++++
 
-        Image image = ((ImageView) photoView.getCenterPane().getChildren().get(0)).getImage();
-        for (ImageView imageView : photoView.getImageViewListView().getItems()){
-            if (imageView.getImage().equals(image)){
-                return index;
-            }
-            index++;
+    private void loadImages() {
+        /*
+        * method is called when you return from the diashow and there are still images in the Model.list<Image>
+        * set a new ImageView for all Images in the ListView
+        * sets the actual chosen Image in the Center
+        */
+        if (model.getImages().size() == 0) return;
+        for (Image image: model.getImages()){
+            photoView.getImageViewListView().getItems().add(newImageViewForListView(image));
         }
-        System.err.println("Cant find Image in List");
-        return -1;
+        setCenterImage(model.getImages().get(model.getIndexOfCenterImage().intValue()));
+    }
+
+    private ImageView newImageViewForListView(Image image){
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(210);         //set only wanted width...
+        imageView.setPreserveRatio(true);   //because preserveRatio(true) resize it distorted automatically
+        return imageView;
     }
 
     private void setCenterImage(Image image){
+        for (int i = 0; i < model.getImages().size(); i++){
+            if (!model.getImages().get(i).equals(image))continue;
+            model.getIndexOfCenterImage().set(i);
+            break;
+        }
         /*
          * create new ImageView
          * set given Image
@@ -103,8 +148,9 @@ public class PhotoViewController {
          * Clear Pane and set new ImageView
          */
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(photoView.getCenterPane().getWidth());
-        imageView.setFitHeight(photoView.getCenterPane().getHeight());
+        imageView.fitWidthProperty().bind(photoView.getCenterPane().widthProperty());
+        imageView.fitHeightProperty().bind(photoView.getCenterPane().heightProperty());
+        imageView.setPreserveRatio(true);
         photoView.getCenterPane().getChildren().clear();
         photoView.getCenterPane().getChildren().add(imageView);
     }
