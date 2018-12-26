@@ -17,7 +17,7 @@ public class Diashow {
     private final Dimension2D dimension = new Dimension2D(1000, 600);
     private BorderPane borderPane;  //root
     //MenuBar (TOP)
-    private MenuBar menuBar;        //menuBar
+    private MenuBar menuBar;
     private Menu menuAction;
     private MenuItem menuItemPauseDiashow;
     private MenuItem menuItemStopDiashow;
