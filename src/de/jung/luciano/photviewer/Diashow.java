@@ -28,7 +28,7 @@ public class Diashow {
     // constructor
     // ++++++++++++++++++++++++++++++
 
-    public Diashow(){
+    protected Diashow(){
         //BorderPane Layout
         borderPane = new BorderPane();
 
@@ -54,7 +54,7 @@ public class Diashow {
     // methods
     // ++++++++++++++++++++++++++++++
 
-    public void show(Stage primaryStage) {
+    protected void show(Stage primaryStage) {
         primaryStage.setTitle("Diashow");
         primaryStage.setScene(scene);
         primaryStage.show();

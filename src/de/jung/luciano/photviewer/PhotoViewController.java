@@ -1,8 +1,6 @@
 package de.jung.luciano.photviewer;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,15 +14,15 @@ import java.util.Optional;
 public class PhotoViewController {
 
     //Model
-    Model model;
+    private Model model;
     //View
-    PhotoView photoView;
+    private PhotoView photoView;
 
     //++++++++++++++++++++++++++++++
     // constructor
     //++++++++++++++++++++++++++++++
 
-    public PhotoViewController(Model model){
+    protected PhotoViewController(Model model){
         //set model and view
         this.model = model;
         this.photoView = new PhotoView();
@@ -63,7 +61,7 @@ public class PhotoViewController {
                 */
                 Image image = new Image(imagePath, true);
                 model.getImages().add(image);
-                photoView.getImageViewListView().getItems().add(newImageViewForListView(image));
+                photoView.getImageViewListView().getItems().add(createImageViewForListView(image));
             }
         } catch (NullPointerException e){return;}   //it workes anyway but the nullpointer exception is not shown
         setCenterImage(model.getImages().get(0));
@@ -115,7 +113,7 @@ public class PhotoViewController {
     //other Methods
     //+++++++++++++++++++++++++++++
 
-    public void show(){
+    protected void show(){
         photoView.show(model.getPrimaryStage());    //show photoView on primaryStage got from model
     }
 
@@ -127,12 +125,12 @@ public class PhotoViewController {
         */
         if (model.getImages().size() == 0) return;
         for (Image image: model.getImages()){
-            photoView.getImageViewListView().getItems().add(newImageViewForListView(image));
+            photoView.getImageViewListView().getItems().add(createImageViewForListView(image));
         }
         setCenterImage(model.getImages().get(model.getIndexOfCenterImage().intValue()));
     }
 
-    private ImageView newImageViewForListView(Image image){
+    private ImageView createImageViewForListView(Image image){
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(200);
         imageView.setFitHeight(200);        //set max width and height

@@ -13,13 +13,11 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Dimension2D;
 
-import java.awt.*;
-
 
 public class PhotoView {
     //----------create Components----------
     private Scene scene;
-    private final Dimension2D dimension = new Dimension2D(1000, 600);
+    private final Dimension2D DIMENSION = new Dimension2D(1000, 600);
     private BorderPane borderPane;  //root
     //MenuBar (TOP)
     private MenuBar menuBar;        //menuBar
@@ -41,7 +39,7 @@ public class PhotoView {
     //constructor
     //++++++++++++++++++++++++++++++
 
-    public PhotoView() {
+    protected PhotoView() {
         //BorderPane Layout
         borderPane = new BorderPane();
         borderPane.setPadding(new Insets(0, 10, 10, 0));
@@ -77,14 +75,14 @@ public class PhotoView {
         borderPane.setCenter(centerPane);
 
         //set Scene
-        scene = new Scene(borderPane,  dimension.getWidth(), dimension.getHeight());
+        scene = new Scene(borderPane,  DIMENSION.getWidth(), DIMENSION.getHeight());
     }
 
     //++++++++++++++++++++++++++++++
     //methods
     //++++++++++++++++++++++++++++++
 
-    public void show(Stage stage) {
+    protected void show(Stage stage) {
         stage.setTitle("PhotoViewer Luciano");
         stage.setScene(scene);
         stage.show();

@@ -14,20 +14,20 @@ import static javafx.application.Platform.runLater;
 
 public class DiashowController {
     //Model
-    Model model;
+    private Model model;
 
     //View
-    Diashow diashowView;
+    private Diashow diashowView;
 
     //Image Task
-    ImageTask imageTask;
+    private ImageTask imageTask;
     private Thread imageThread  = null;
 
     //++++++++++++++++++++++++++++++
     // constructor
     // ++++++++++++++++++++++++++++++
     
-    public DiashowController(Model model) {
+    protected DiashowController(Model model) {
         this.model = model;
         this.diashowView = new Diashow();
         imageTask = new ImageTask();
@@ -64,7 +64,7 @@ public class DiashowController {
         photoViewController.show();                                                     //show new Scene (Diashow)
     }
 
-    public void handleStartDiashow(ActionEvent event){
+    private void handleStartDiashow(ActionEvent event){
         //creates and starts a new Thread
         imageThread = new Thread(imageTask);
         imageThread.start();
@@ -85,7 +85,7 @@ public class DiashowController {
     // other methods
     // ++++++++++++++++++++++++++++++
 
-    public void show() {
+    protected void show() {
         if(model.getImages().size() == 0) return;   //return if there are no Images
         /*
         * else Start Diashow Thread

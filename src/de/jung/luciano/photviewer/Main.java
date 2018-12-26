@@ -13,6 +13,12 @@ public class Main extends Application {
     * show first view with method controller.show witch shows the view from the controller which got the Stage from the model
     */
 
+    //Model
+    private Model model;
+
+    //first controller
+    private PhotoViewController photoViewController;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -20,10 +26,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         //create Model
-        Model model = new Model(primaryStage);
+        model = new Model(primaryStage);
 
         //call/ create PhotoViewController
-        PhotoViewController photoViewController = new PhotoViewController(model);
+        photoViewController = new PhotoViewController(model);
         photoViewController.show();
     }
 }
