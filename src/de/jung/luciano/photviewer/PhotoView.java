@@ -37,6 +37,9 @@ public class PhotoView {
     private Button buttonLeftArrow; //previous Image
     private Button buttonRightArrow;//next Image
 
+    //++++++++++++++++++++++++++++++
+    //constructor
+    //++++++++++++++++++++++++++++++
 
     public PhotoView() {
         //BorderPane Layout
@@ -77,11 +80,19 @@ public class PhotoView {
         scene = new Scene(borderPane,  dimension.getWidth(), dimension.getHeight());
     }
 
+    //++++++++++++++++++++++++++++++
+    //methods
+    //++++++++++++++++++++++++++++++
+
     public void show(Stage stage) {
         stage.setTitle("PhotoViewer Luciano");
         stage.setScene(scene);
         stage.show();
     }
+
+    //++++++++++++++++++++++++++++++
+    // getter
+    //++++++++++++++++++++++++++++++
 
     public MenuItem getMenuItemOpenFiles() {
         return menuItemOpenFiles;

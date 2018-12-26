@@ -24,6 +24,10 @@ public class Diashow {
     //for CenterImage (CENTER)
     private ImageView imageView = new ImageView();
 
+    //++++++++++++++++++++++++++++++
+    // constructor
+    // ++++++++++++++++++++++++++++++
+
     public Diashow(){
         //BorderPane Layout
         borderPane = new BorderPane();
@@ -46,11 +50,19 @@ public class Diashow {
 
     }
 
+    //++++++++++++++++++++++++++++++
+    // methods
+    // ++++++++++++++++++++++++++++++
+
     public void show(Stage primaryStage) {
         primaryStage.setTitle("Diashow");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    //++++++++++++++++++++++++++++++
+    // getter
+    // ++++++++++++++++++++++++++++++
 
     public MenuItem getMenuItemPauseDiashow() {
         return menuItemPauseDiashow;

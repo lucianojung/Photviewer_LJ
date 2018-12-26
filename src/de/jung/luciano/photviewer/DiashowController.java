@@ -23,6 +23,9 @@ public class DiashowController {
     ImageTask imageTask;
     private Thread imageThread  = null;
 
+    //++++++++++++++++++++++++++++++
+    // constructor
+    // ++++++++++++++++++++++++++++++
     
     public DiashowController(Model model) {
         this.model = model;
@@ -42,9 +45,9 @@ public class DiashowController {
         });
     }
 
-    //+++++++++++++++++++++++++++++
-    //Listener
-    //+++++++++++++++++++++++++++++
+    //++++++++++++++++++++++++++++++
+    // Event Handler
+    // ++++++++++++++++++++++++++++++
 
     //stops the Diashow (names are contradictory)
     private void handlePauseDiashow(ActionEvent event) {
@@ -78,9 +81,9 @@ public class DiashowController {
         diashowView.getMenuItemPauseDiashow().setText("Start");
     }
 
-    //+++++++++++++++++++++++++++++
-    //other methods
-    //+++++++++++++++++++++++++++++
+    //++++++++++++++++++++++++++++++
+    // other methods
+    // ++++++++++++++++++++++++++++++
 
     public void show() {
         if(model.getImages().size() == 0) return;   //return if there are no Images

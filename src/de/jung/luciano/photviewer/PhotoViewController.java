@@ -20,6 +20,10 @@ public class PhotoViewController {
     //View
     PhotoView photoView;
 
+    //++++++++++++++++++++++++++++++
+    // constructor
+    //++++++++++++++++++++++++++++++
+
     public PhotoViewController(Model model){
         //set model and view
         this.model = model;
@@ -34,10 +38,6 @@ public class PhotoViewController {
         photoView.getButtonLeftArrow().setOnAction(event -> handleLeftArrow(event));
         photoView.getButtonRightArrow().setOnAction(event -> handleRightArrow(event));
         photoView.getImageViewListView().setOnMouseClicked(event -> handleListView(event));
-    }
-
-    public void show(){
-        photoView.show(model.getPrimaryStage());    //show photoView on primaryStage got from model
     }
 
     //++++++++++++++++++++++++++++++++
@@ -115,6 +115,10 @@ public class PhotoViewController {
     //other Methods
     //+++++++++++++++++++++++++++++
 
+    public void show(){
+        photoView.show(model.getPrimaryStage());    //show photoView on primaryStage got from model
+    }
+
     private void loadImages() {
         /*
         * method is called when you return from the diashow and there are still images in the Model.list<Image>
@@ -130,8 +134,9 @@ public class PhotoViewController {
 
     private ImageView newImageViewForListView(Image image){
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(210);         //set only wanted width...
-        imageView.setPreserveRatio(true);   //because preserveRatio(true) resize it distorted automatically
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(200);        //set max width and height
+        imageView.setPreserveRatio(true);   //preserveRatio(true) resize the imageView distorted automatically
         return imageView;
     }
 
