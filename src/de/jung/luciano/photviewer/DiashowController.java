@@ -1,15 +1,6 @@
 package de.jung.luciano.photviewer;
 
-import javafx.beans.property.*;
 import javafx.event.ActionEvent;
-import javafx.scene.image.Image;
-
-import javax.swing.text.html.ImageView;
-
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.security.Key;
-
 import static javafx.application.Platform.runLater;
 
 public class DiashowController {

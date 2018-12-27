@@ -8,9 +8,10 @@ public class Main extends Application {
     * Main class for the photviewer
     * @author: Luciano Jung
     *
-    * Programed with MVC-Pattern
-    * create Model first and give it to the first controller use it
-    * show first view with method controller.show witch shows the view from the controller which got the Stage from the model
+    * Programed with Model View Control-Pattern
+    * create Model and give it to the first controller use it
+    * create PhotoViewController and
+    * show first view with method controller.show
     */
 
     //Model
@@ -28,7 +29,7 @@ public class Main extends Application {
         //create Model
         model = new Model(primaryStage);
 
-        //call/ create PhotoViewController
+        //create PhotoViewController
         photoViewController = new PhotoViewController(model);
         photoViewController.show();
     }

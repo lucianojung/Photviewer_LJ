@@ -1,7 +1,6 @@
 package de.jung.luciano.photviewer;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
