@@ -33,6 +33,8 @@ public class DiashowController {
         diashowView.getScene().setOnKeyPressed(event -> {           //Handle Key Pressed ESCAPE while Diashow is shown
             if (event.getCode().toString().equals("ESCAPE"))
                 handleStopDiashow(new ActionEvent());               //-> back to photoviewer
+            if (event.getCode().toString().equals("RIGHT"))
+                imageTask.nextImage();
         });
     }
 
@@ -113,14 +115,18 @@ public class DiashowController {
             try{
                 while (true){
                     Thread.sleep(model.getDiashowDuration());
-                    model.getIndexOfCenterImage().set(model.getIndexOfCenterImage().intValue()+1);
-                    if (model.getIndexOfCenterImage().intValue() == model.getImages().size())
-                        model.getIndexOfCenterImage().set(0);
-                    updateImage(model.getIndexOfCenterImage().intValue());
+                    nextImage();
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+
+        private void nextImage(){
+            model.getIndexOfCenterImage().set(model.getIndexOfCenterImage().intValue()+1);
+            if (model.getIndexOfCenterImage().intValue() == model.getImages().size())
+                model.getIndexOfCenterImage().set(0);
+            updateImage(model.getIndexOfCenterImage().intValue());
         }
 
         //update Image method with runLater(Runnable)
