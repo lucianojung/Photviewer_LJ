@@ -1,7 +1,10 @@
 package de.jung.luciano.photviewer;
 
+import javafx.concurrent.Worker;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -10,10 +13,11 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.geometry.Dimension2D;
-
-import java.awt.*;
 
 
 public class PhotoView {
@@ -35,6 +39,7 @@ public class PhotoView {
     private Pane centerPane;        //for shownImage
     //for Navigation (BOTTOM)
     private Button buttonLeftArrow; //previous Image
+    private Hyperlink hyperlinkDiashow;
     private Button buttonRightArrow;//next Image
 
     //++++++++++++++++++++++++++++++
@@ -67,15 +72,15 @@ public class PhotoView {
         //--Bottom for Navigation--
         HBox hBoxButtons = new HBox();
         buttonLeftArrow = new Button("<-");
+        hyperlinkDiashow = new Hyperlink("Diashow");
         buttonRightArrow = new Button("->");
         hBoxButtons.setAlignment(Pos.CENTER);
-        hBoxButtons.getChildren().addAll(buttonLeftArrow, buttonRightArrow);
+        hBoxButtons.getChildren().addAll(buttonLeftArrow, hyperlinkDiashow, buttonRightArrow);
         borderPane.setBottom(hBoxButtons);
 
         //--Center for chosen Picture--
         centerPane = new Pane();
         borderPane.setCenter(centerPane);
-
         //set Scene
         scene = new Scene(borderPane,  dimension.getWidth(), dimension.getHeight());
     }
@@ -124,5 +129,13 @@ public class PhotoView {
 
     public Pane getCenterPane() {
         return centerPane;
+    }
+
+    public Hyperlink getHyperlinkDiashow() {
+        return hyperlinkDiashow;
+    }
+
+    public Scene getScene() {
+        return scene;
     }
 }

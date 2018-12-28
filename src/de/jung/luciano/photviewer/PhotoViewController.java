@@ -1,8 +1,6 @@
 package de.jung.luciano.photviewer;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,8 +34,15 @@ public class PhotoViewController {
         photoView.getMenuItemDiashow().setOnAction(event -> handleDiashow(event));
         photoView.getMenuItemDiashowDuration().setOnAction(event -> handleDiashowDuration(event));
         photoView.getButtonLeftArrow().setOnAction(event -> handleLeftArrow(event));
+        photoView.getHyperlinkDiashow().setOnAction(event -> photoView.getMenuItemDiashow().fire());
         photoView.getButtonRightArrow().setOnAction(event -> handleRightArrow(event));
         photoView.getImageViewListView().setOnMouseClicked(event -> handleListView(event));
+        photoView.getScene().setOnKeyPressed(event -> {           //Handle Key Pressed LEFT and RIGHT Arrow
+            if (event.getCode().toString().equals("LEFT"))
+                photoView.getButtonLeftArrow().fire();
+            if (event.getCode().toString().equals("RIGHT"))
+                photoView.getButtonRightArrow().fire();
+        });
     }
 
     //++++++++++++++++++++++++++++++++
