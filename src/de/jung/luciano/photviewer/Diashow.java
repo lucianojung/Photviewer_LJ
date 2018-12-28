@@ -7,8 +7,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 
@@ -17,7 +15,7 @@ public class Diashow {
     private final Dimension2D dimension = new Dimension2D(1000, 600);
     private BorderPane borderPane;  //root
     //MenuBar (TOP)
-    private MenuBar menuBar;        //menuBar
+    private MenuBar menuBar;
     private Menu menuAction;
     private MenuItem menuItemPauseDiashow;
     private MenuItem menuItemStopDiashow;
@@ -28,7 +26,7 @@ public class Diashow {
     // constructor
     // ++++++++++++++++++++++++++++++
 
-    public Diashow(){
+    protected Diashow(){
         //BorderPane Layout
         borderPane = new BorderPane();
 
@@ -54,7 +52,7 @@ public class Diashow {
     // methods
     // ++++++++++++++++++++++++++++++
 
-    public void show(Stage primaryStage) {
+    protected void show(Stage primaryStage) {
         primaryStage.setTitle("Diashow");
         primaryStage.setScene(scene);
         primaryStage.show();

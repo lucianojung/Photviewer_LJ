@@ -14,15 +14,15 @@ import java.util.Optional;
 public class PhotoViewController {
 
     //Model
-    Model model;
+    private Model model;
     //View
-    PhotoView photoView;
+    private PhotoView photoView;
 
     //++++++++++++++++++++++++++++++
     // constructor
     //++++++++++++++++++++++++++++++
 
-    public PhotoViewController(Model model){
+    protected PhotoViewController(Model model){
         //set model and view
         this.model = model;
         this.photoView = new PhotoView();
@@ -50,33 +50,32 @@ public class PhotoViewController {
     //++++++++++++++++++++++++++++++++
 
     private void handleOpenFiles(ActionEvent event) {
-        //get Files chosen in FileChooser
+        /*
+        * open new File Chooser to choose the Images you want to show
+        * Works with: JPG, PNG, GIF, BMP
+        * try to get the Image for each chosen ImageFile and add it to the Image List
+        * set Center Image Index to 0
+        * Load all Images
+        */
         FileChooser fileChooser = new FileChooser();
         List<File> files = fileChooser.showOpenMultipleDialog(model.getPrimaryStage());
 
-        //try to get the Image for each chosen File
         try{
             for (File file : files) {
-                String imagePath = file.toURI().toString(); //get image Path as String
-                System.out.println("Loading Image from: " + imagePath);     //Message
-
-                /*
-                * Load Image with ImagePath and Background Loading
-                * create new ImageView
-                * set prefered width and height
-                * add ImageView to List View from photoView
-                */
+                String imagePath = file.toURI().toString();                                                             //get image Path as String
+                System.out.println("Loading Image from Path: " + imagePath);                                            //Message
                 Image image = new Image(imagePath, true);
                 model.getImages().add(image);
-                photoView.getImageViewListView().getItems().add(newImageViewForListView(image));
             }
-        } catch (NullPointerException e){return;}   //it workes anyway but the nullpointer exception is not shown
-        setCenterImage(model.getImages().get(0));
+        } catch (NullPointerException e){return;}                                                                       //return if no image is load
+
+        model.getIndexOfCenterImage().set(0);                                                                           //Center Image is First Image
+        loadImages();
     }
 
     private void handleDiashow(ActionEvent actionEvent) {
-        DiashowController diashowController = new DiashowController(model);     //give model to diashowController
-        diashowController.show();                                               //show new Scene (Diashow)
+        DiashowController diashowController = new DiashowController(model);                                             //create new Diashow Controller and give him the model
+        diashowController.show();                                                                                       //show new Scene (Diashow)
     }
 
     private void handleDiashowDuration(ActionEvent event) {
@@ -95,18 +94,18 @@ public class PhotoViewController {
     }
 
     private void handleLeftArrow(ActionEvent actionEvent) {
+        if (model.getImages().size() == 0) return;                                                                      //if no Images load yet
         int index = model.getIndexOfCenterImage().intValue();
-        if (index == -1)return;                 //if no Images load yet
-        else if (index <= 0)                     //first image get previous => last image
+        if (index <= 0)                                                                                                 //first image get previous => last image
             index = photoView.getImageViewListView().getItems().size();
         model.getIndexOfCenterImage().set(--index);
         setCenterImage(photoView.getImageViewListView().getItems().get(index).getImage());
     }
 
     private void handleRightArrow(ActionEvent actionEvent) {
+        if (model.getImages().size() == 0) return;                                                                      //if no Images load yet
         int index = model.getIndexOfCenterImage().intValue();
-        if (index == -1)return;                                                  //if no Images load yet
-        else if (index >= photoView.getImageViewListView().getItems().size()-1)   //last image get next => first image
+        if (index >= photoView.getImageViewListView().getItems().size()-1)                                              //last image get next => first image
             index = -1;
         model.getIndexOfCenterImage().set(++index);
         setCenterImage(photoView.getImageViewListView().getItems().get(index).getImage());
@@ -120,43 +119,45 @@ public class PhotoViewController {
     //other Methods
     //+++++++++++++++++++++++++++++
 
-    public void show(){
-        photoView.show(model.getPrimaryStage());    //show photoView on primaryStage got from model
+    protected void show(){
+        photoView.show(model.getPrimaryStage());                                                                        //show photoView on primaryStage got from model
     }
 
     private void loadImages() {
         /*
-        * method is called when you return from the diashow and there are still images in the Model.list<Image>
-        * set a new ImageView for all Images in the ListView
+        * method is called each time the ListView have to be refreshed
+        * Load all Images (in ImageViews) from Model in the ListView
+        * fit Width and Height are for max Width and Height, because preserveRatio(true) bind them so the are not distorted
         * sets the actual chosen Image in the Center
         */
         if (model.getImages().size() == 0) return;
         for (Image image: model.getImages()){
-            photoView.getImageViewListView().getItems().add(newImageViewForListView(image));
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(200);
+            imageView.setFitHeight(200);                                                                                    //set max width and height
+            imageView.setPreserveRatio(true);
+            photoView.getImageViewListView().getItems().add(imageView);
         }
         setCenterImage(model.getImages().get(model.getIndexOfCenterImage().intValue()));
     }
 
-    private ImageView newImageViewForListView(Image image){
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(200);
-        imageView.setFitHeight(200);        //set max width and height
-        imageView.setPreserveRatio(true);   //preserveRatio(true) resize the imageView distorted automatically
-        return imageView;
-    }
-
     private void setCenterImage(Image image){
+
+        /*
+         * for-Schleife: locate index of center Image
+         * possible source of error:
+         * if you load an image twice with the same URL the for-loop will only gets the index of the first one
+         *
+         * create new ImageView and set given Image
+         * set fit width and height got from CenterPaneSize and preserveRatio(true)
+         * Clear Pane and set new ImageView
+         */
         for (int i = 0; i < model.getImages().size(); i++){
             if (!model.getImages().get(i).equals(image))continue;
             model.getIndexOfCenterImage().set(i);
             break;
         }
-        /*
-         * create new ImageView
-         * set given Image
-         * set fit width and height got from CenterPaneSize
-         * Clear Pane and set new ImageView
-         */
+
         ImageView imageView = new ImageView(image);
         imageView.fitWidthProperty().bind(photoView.getCenterPane().widthProperty());
         imageView.fitHeightProperty().bind(photoView.getCenterPane().heightProperty());

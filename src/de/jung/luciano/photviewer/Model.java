@@ -1,7 +1,6 @@
 package de.jung.luciano.photviewer;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -21,7 +20,7 @@ public class Model {
     public Model(Stage primaryStage){
         this.primaryStage = primaryStage;
         images = new ArrayList<Image>();
-        diashowDuration = 2500;
+        diashowDuration = 2000;
         indexOfCenterImage = new SimpleIntegerProperty(-1);
 
     }
@@ -47,11 +46,6 @@ public class Model {
     }
 
     public IntegerProperty getIndexOfCenterImage() {
-        // conditions to prevent NullPointer Exceptions because of ImageList
-        if(images.size() <= 0) return new SimpleIntegerProperty(-1);
-        else if(indexOfCenterImage.intValue() >= images.size()) {
-            indexOfCenterImage.set(0);
-        }
         return indexOfCenterImage;
     }
 }
