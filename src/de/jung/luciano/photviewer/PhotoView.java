@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -41,6 +42,8 @@ public class PhotoView {
     private Button buttonLeftArrow; //previous Image
     private Hyperlink hyperlinkDiashow;
     private Button buttonRightArrow;//next Image
+    //for Logo (RIGHT)
+    private final ImageView imageViewLogo = new ImageView(new Image("de/jung/luciano/images/LJ_Logo.png"));
 
     //++++++++++++++++++++++++++++++
     //constructor
@@ -57,6 +60,9 @@ public class PhotoView {
         menuItemDiashow = new MenuItem("Start Diashow");
         menuItemDiashowDuration = new MenuItem("Set Duration");
         menuAction = new Menu("Aktion");
+        imageViewLogo.setFitWidth(30);
+        imageViewLogo.setFitHeight(15);
+        menuAction.setGraphic(imageViewLogo);
         menuDiashow = new Menu("Diashow");
         menuAction.getItems().addAll(menuItemOpenFiles, menuItemExit);
         menuDiashow.getItems().addAll(menuItemDiashow, menuItemDiashowDuration);
@@ -80,6 +86,7 @@ public class PhotoView {
 
         //--Center for chosen Picture--
         centerPane = new Pane();
+
         borderPane.setCenter(centerPane);
         //set Scene
         scene = new Scene(borderPane,  DIMENSION.getWidth(), DIMENSION.getHeight());
