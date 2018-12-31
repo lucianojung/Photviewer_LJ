@@ -1,6 +1,8 @@
 package de.jung.luciano.photviewer;
 
 import javafx.event.ActionEvent;
+import javafx.scene.Scene;
+
 import static javafx.application.Platform.runLater;
 
 public class DiashowController {
@@ -36,6 +38,8 @@ public class DiashowController {
             if (event.getCode().toString().equals("RIGHT"))
                 imageTask.nextImage();
         });
+
+
     }
 
     //++++++++++++++++++++++++++++++

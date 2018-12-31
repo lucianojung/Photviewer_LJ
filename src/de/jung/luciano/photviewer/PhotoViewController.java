@@ -1,6 +1,7 @@
 package de.jung.luciano.photviewer;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -157,7 +158,6 @@ public class PhotoViewController {
             model.getIndexOfCenterImage().set(i);
             break;
         }
-
         ImageView imageView = new ImageView(image);
         imageView.fitWidthProperty().bind(photoView.getCenterPane().widthProperty());
         imageView.fitHeightProperty().bind(photoView.getCenterPane().heightProperty());
