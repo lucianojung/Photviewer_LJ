@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class Diashow {
     private Scene scene;
-    private final Dimension2D dimension = new Dimension2D(1000, 600);
+    private final Dimension2D DIMENSION = new Dimension2D(1000, 600);
     private BorderPane borderPane;  //root
     //MenuBar (TOP)
     private MenuBar menuBar;
@@ -44,7 +44,7 @@ public class Diashow {
         borderPane.setCenter(imageView);
 
         //set Scene
-        scene = new Scene(borderPane,  dimension.getWidth(), dimension.getHeight());
+        scene = new Scene(borderPane,  DIMENSION.getWidth(), DIMENSION.getHeight());
 
     }
 

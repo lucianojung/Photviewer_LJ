@@ -6,10 +6,11 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Model {
     private Stage primaryStage = null;
-    private ArrayList<Image> images = null;
+    private List<Image> images = null;
     private long diashowDuration;
     private IntegerProperty indexOfCenterImage;
 
@@ -33,7 +34,7 @@ public class Model {
         return primaryStage;
     }
 
-    public ArrayList<Image> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
