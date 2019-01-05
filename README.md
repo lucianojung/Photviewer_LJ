@@ -9,7 +9,7 @@ I practice using the MVC-Pattern, JavaFX Controls and reusable and clean Code.
 
 I will uplaod an USE-Case-, Class and State-Diagramm later!
 
-Other Funktions:
+Other Functions:
 - set the Duration of the Diashow with a Button in the MenuBar
 - get next or previous Image by clicking the Arrow-Buttons on the Bottom
 
