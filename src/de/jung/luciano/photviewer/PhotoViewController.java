@@ -132,6 +132,7 @@ public class PhotoViewController {
         * sets the actual chosen Image in the Center
         */
         if (model.getImages().size() == 0) return;
+        photoView.getImageViewListView().getItems().clear();
         for (Image image: model.getImages()){
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(200);

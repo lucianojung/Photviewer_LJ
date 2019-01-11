@@ -8,11 +8,10 @@ import static javafx.application.Platform.runLater;
 public class DiashowController {
     //Model
     private Model model;
-
     //View
     private Diashow diashowView;
 
-    //Image Task
+    //Image Task and Thread
     private ImageTask imageTask;
     private Thread imageThread  = null;
 
