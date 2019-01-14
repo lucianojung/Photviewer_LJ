@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
+
     private Stage primaryStage = null;
     private List<Image> images = null;
     private long diashowDuration;
