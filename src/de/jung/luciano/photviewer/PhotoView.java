@@ -43,7 +43,7 @@ public class PhotoView {
     private Hyperlink hyperlinkDiashow;
     private Button buttonRightArrow;//next Image
     //for Logo (RIGHT)
-    private final ImageView imageViewLogo = new ImageView(new Image("de/jung/luciano/images/LJ_Logo.png"));
+    private final Image imageLogo = new Image(getClass().getResourceAsStream("/de/jung/luciano/images/LJ_Logo2.png"));
 
     //++++++++++++++++++++++++++++++
     //constructor
@@ -60,9 +60,6 @@ public class PhotoView {
         menuItemDiashow = new MenuItem("Start Diashow");
         menuItemDiashowDuration = new MenuItem("Set Duration");
         menuAction = new Menu("Aktion");
-        imageViewLogo.setFitWidth(30);
-        imageViewLogo.setFitHeight(15);
-        menuAction.setGraphic(imageViewLogo);
         menuDiashow = new Menu("Diashow");
         menuAction.getItems().addAll(menuItemOpenFiles, menuItemExit);
         menuDiashow.getItems().addAll(menuItemDiashow, menuItemDiashowDuration);
@@ -98,6 +95,7 @@ public class PhotoView {
 
     protected void show(Stage stage) {
         stage.setTitle("PhotoViewer Luciano");
+        stage.getIcons().add(imageLogo);
         stage.setScene(scene);
         stage.show();
     }
