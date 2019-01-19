@@ -49,7 +49,7 @@ public class PhotoView {
         menuItemExit = new MenuItem("Exit");
         menuItemDiashow = new MenuItem("Start Diashow");
         menuItemDiashowDuration = new MenuItem("Set Duration");
-        menuAction = new Menu("Aktion");
+        menuAction = new Menu("Action");
         menuDiashow = new Menu("Diashow");
         menuAction.getItems().addAll(menuItemOpenFiles, menuItemExit);
         menuDiashow.getItems().addAll(menuItemDiashow, menuItemDiashowDuration);
@@ -82,10 +82,10 @@ public class PhotoView {
     //methods
     //++++++++++++++++++++++++++++++
 
-    protected void show(Stage stage) {
-        stage.setTitle("PhotoViewer Luciano");
-        stage.setScene(scene);
-        stage.show();
+    protected void show(Stage primaryStage) {
+        primaryStage.setTitle("PhotoViewer Luciano");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     //++++++++++++++++++++++++++++++

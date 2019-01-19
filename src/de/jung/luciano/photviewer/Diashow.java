@@ -33,7 +33,7 @@ public class Diashow {
         //--create MenuBar--
         menuItemPauseDiashow = new MenuItem("Pause");
         menuItemStopDiashow = new MenuItem("Stop");
-        menuAction = new Menu("Aktion");
+        menuAction = new Menu("Action");
         menuAction.getItems().addAll(menuItemPauseDiashow, menuItemStopDiashow);
         menuBar = new MenuBar();
         menuBar.getMenus().addAll(menuAction);
@@ -53,7 +53,7 @@ public class Diashow {
     // ++++++++++++++++++++++++++++++
 
     protected void show(Stage primaryStage) {
-        primaryStage.setTitle("Diashow");
+        //primaryStage.setTitle("Diashow"); //useless
         primaryStage.setScene(scene);
         primaryStage.show();
     }

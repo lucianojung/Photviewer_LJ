@@ -28,7 +28,15 @@ public class PhotoViewController {
         this.photoView = new PhotoView();
         loadImages();
 
-        //Listener
+        generateEventHandler();
+    }
+
+    //++++++++++++++++++++++++++++++++
+    //Event Handler
+    //++++++++++++++++++++++++++++++++
+
+    private void generateEventHandler(){
+        //generates all EventHandlers for the PhotoView
         photoView.getMenuItemOpenFiles().setOnAction(event -> handleOpenFiles(event));
         photoView.getMenuItemExit().setOnAction(event -> System.exit(0));
         photoView.getMenuItemDiashow().setOnAction(event -> handleDiashow(event));
@@ -37,10 +45,6 @@ public class PhotoViewController {
         photoView.getButtonRightArrow().setOnAction(event -> handleRightArrow(event));
         photoView.getImageViewListView().setOnMouseClicked(event -> handleListView(event));
     }
-
-    //++++++++++++++++++++++++++++++++
-    //Event Handler
-    //++++++++++++++++++++++++++++++++
 
     private void handleOpenFiles(ActionEvent event) {
         /*
@@ -87,21 +91,21 @@ public class PhotoViewController {
     }
 
     private void handleLeftArrow(ActionEvent actionEvent) {
-        if (model.getImages().size() == 0) return;                                                                      //if no Images load yet
+        if (model.getImages().size() <= 0) return;                                                                      //if no Images load yet
         int index = model.getIndexOfCenterImage().intValue();
         if (index <= 0)                                                                                                 //first image get previous => last image
             index = photoView.getImageViewListView().getItems().size();
         model.getIndexOfCenterImage().set(--index);
-        setCenterImage(photoView.getImageViewListView().getItems().get(index).getImage());
+        setCenterImage(model.getActualImage());
     }
 
     private void handleRightArrow(ActionEvent actionEvent) {
-        if (model.getImages().size() == 0) return;                                                                      //if no Images load yet
+        if (model.getImages().size() <= 0) return;                                                                      //if no Images load yet
         int index = model.getIndexOfCenterImage().intValue();
         if (index >= photoView.getImageViewListView().getItems().size()-1)                                              //last image get next => first image
             index = -1;
         model.getIndexOfCenterImage().set(++index);
-        setCenterImage(photoView.getImageViewListView().getItems().get(index).getImage());
+        setCenterImage(model.getActualImage());
     }
 
     private void handleListView(MouseEvent event) {
@@ -123,7 +127,7 @@ public class PhotoViewController {
         * fit Width and Height are for max Width and Height, because preserveRatio(true) bind them so the are not distorted
         * sets the actual chosen Image in the Center
         */
-        if (model.getImages().size() == 0) return;
+        if (model.getImages().size() <= 0) return;
         photoView.getImageViewListView().getItems().clear();
         for (Image image: model.getImages()){
             ImageView imageView = new ImageView(image);
@@ -132,7 +136,7 @@ public class PhotoViewController {
             imageView.setPreserveRatio(true);
             photoView.getImageViewListView().getItems().add(imageView);
         }
-        setCenterImage(model.getImages().get(model.getIndexOfCenterImage().intValue()));
+        setCenterImage(model.getActualImage());
     }
 
     private void setCenterImage(Image image){
