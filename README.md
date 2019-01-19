@@ -7,7 +7,10 @@ You also can start a Diashow of all Pictures using the MenuBar.
 This was a voluntery University Project.
 I practice using the MVC-Pattern, JavaFX Controls and reusable and clean Code.
 
-I will uplaod an USE-Case-, Class and State-Diagramm later!
+I also updated UML-Diagrams and sample Images:
+- Use Case-Diagramm
+- Classdiagramm
+- most important Sequencediagramms
 
 Other Functions:
 - set the Duration of the Diashow with a Button in the MenuBar
