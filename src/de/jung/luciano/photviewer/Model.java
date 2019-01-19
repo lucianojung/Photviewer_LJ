@@ -50,4 +50,8 @@ public class Model {
     public IntegerProperty getIndexOfCenterImage() {
         return indexOfCenterImage;
     }
+
+    public Image getActualImage(){
+        return images.get(indexOfCenterImage.intValue());
+    }
 }

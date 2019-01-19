@@ -1,10 +1,7 @@
 package de.jung.luciano.photviewer;
 
-import javafx.concurrent.Worker;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -14,9 +11,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.geometry.Dimension2D;
 
@@ -59,7 +53,7 @@ public class PhotoView {
         menuItemExit = new MenuItem("Exit");
         menuItemDiashow = new MenuItem("Start Diashow");
         menuItemDiashowDuration = new MenuItem("Set Duration");
-        menuAction = new Menu("Aktion");
+        menuAction = new Menu("Action");
         menuDiashow = new Menu("Diashow");
         menuAction.getItems().addAll(menuItemOpenFiles, menuItemExit);
         menuDiashow.getItems().addAll(menuItemDiashow, menuItemDiashowDuration);
@@ -93,11 +87,11 @@ public class PhotoView {
     //methods
     //++++++++++++++++++++++++++++++
 
-    protected void show(Stage stage) {
-        stage.setTitle("PhotoViewer Luciano");
-        stage.getIcons().add(imageLogo);
-        stage.setScene(scene);
-        stage.show();
+    protected void show(Stage primaryStage) {
+        primaryStage.setTitle("PhotoViewer Luciano");
+        primaryStage.getIcons().add(imageLogo);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     //++++++++++++++++++++++++++++++

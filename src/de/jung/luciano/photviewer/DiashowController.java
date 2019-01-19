@@ -1,8 +1,6 @@
 package de.jung.luciano.photviewer;
 
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-
 import static javafx.application.Platform.runLater;
 
 public class DiashowController {
@@ -28,7 +26,15 @@ public class DiashowController {
         diashowView.getImageView().fitWidthProperty().bind( model.getPrimaryStage().widthProperty());
         diashowView.getImageView().fitHeightProperty().bind(model.getPrimaryStage().heightProperty());
 
-        //Listener
+        generateEventHandler();
+    }
+
+    //++++++++++++++++++++++++++++++
+    // Event Handler
+    // ++++++++++++++++++++++++++++++
+
+    private void generateEventHandler(){
+        //generates all EventHandlers for the Diashow
         diashowView.getMenuItemPauseDiashow().setOnAction(event -> handlePauseDiashow(event));
         diashowView.getMenuItemStopDiashow().setOnAction(event -> handleStopDiashow(event));
         diashowView.getScene().setOnKeyPressed(event -> {           //Handle Key Pressed ESCAPE while Diashow is shown
@@ -37,25 +43,19 @@ public class DiashowController {
             if (event.getCode().toString().equals("RIGHT"))
                 imageTask.nextImage();
         });
-
-
     }
-
-    //++++++++++++++++++++++++++++++
-    // Event Handler
-    // ++++++++++++++++++++++++++++++
 
     //stops the Diashow (names are contradictory)
     private void handlePauseDiashow(ActionEvent event) {
         if (imageThread.getState().equals(Thread.State.TERMINATED))
             handleStartDiashow(event);
         else
-            handleInterruptDiashow(event);
+            interruptDiashow();
     }
 
     //stops diahow via handlePause and return to photoviewer scene
     private void handleStopDiashow(ActionEvent event) {
-        handleInterruptDiashow(event);
+        interruptDiashow();
         PhotoViewController photoViewController = new PhotoViewController(model);       //give model to diashowController
         photoViewController.show();                                                     //show new Scene (Diashow)
     }
@@ -65,16 +65,6 @@ public class DiashowController {
         imageThread = new Thread(imageTask);
         imageThread.start();
         diashowView.getMenuItemPauseDiashow().setText("Pause");
-    }
-
-    private void handleInterruptDiashow(ActionEvent event){
-        imageThread.interrupt();
-        try {
-            imageThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        diashowView.getMenuItemPauseDiashow().setText("Start");
     }
 
     //++++++++++++++++++++++++++++++
@@ -90,12 +80,22 @@ public class DiashowController {
          * call show method of view with primary Stage
          * set FullScreen
          */
-        if(model.getImages().size() == 0) return;
+        if(model.getImages().size() <= 0) return;
 
         handleStartDiashow(new ActionEvent());
-        diashowView.getImageView().setImage(model.getImages().get(model.getIndexOfCenterImage().getValue().intValue()));
+        diashowView.getImageView().setImage(model.getActualImage());
         diashowView.show(model.getPrimaryStage());
         model.getPrimaryStage().setFullScreen(true);
+    }
+
+    private void interruptDiashow(){
+        imageThread.interrupt();
+        try {
+            imageThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        diashowView.getMenuItemPauseDiashow().setText("Start");
     }
 
     //++++++++++++++++++++++++++++++
@@ -129,17 +129,17 @@ public class DiashowController {
             model.getIndexOfCenterImage().set(model.getIndexOfCenterImage().intValue()+1);
             if (model.getIndexOfCenterImage().intValue() == model.getImages().size())
                 model.getIndexOfCenterImage().set(0);
-            updateImage(model.getIndexOfCenterImage().intValue());
+            updateImage();
+            }
         }
 
         //update Image method with runLater(Runnable)
-        private void updateImage(int index)
+        private void updateImage()
         {
             runLater(new Runnable() {
-                @Override public void run() {
-                    diashowView.getImageView().setImage(model.getImages().get(index));
-                }
-            });
-        }
+            @Override public void run() {
+                diashowView.getImageView().setImage(model.getActualImage());
+            }
+        });
     }
 }
