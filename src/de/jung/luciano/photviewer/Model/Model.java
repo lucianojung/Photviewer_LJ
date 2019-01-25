@@ -1,4 +1,4 @@
-package de.jung.luciano.photviewer;
+package de.jung.luciano.photviewer.Model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -13,7 +13,7 @@ public class Model {
     private Stage primaryStage = null;
     private List<Image> images = null;
     private long diashowDuration;
-    private IntegerProperty indexOfCenterImage;
+    private int indexOfCenterImage;
 
     //++++++++++++++++++++++++++++++
     // constructor
@@ -23,7 +23,7 @@ public class Model {
         this.primaryStage = primaryStage;
         images = new ArrayList<Image>();
         diashowDuration = 2000;
-        indexOfCenterImage = new SimpleIntegerProperty(-1);
+        indexOfCenterImage = -1;
 
     }
 
@@ -47,11 +47,15 @@ public class Model {
         this.diashowDuration = diashowDuration;
     }
 
-    public IntegerProperty getIndexOfCenterImage() {
+    public int getIndexOfCenterImage() {
         return indexOfCenterImage;
     }
 
+    public void setIndexOfCenterImage(int indexOfCenterImage) {
+        this.indexOfCenterImage = indexOfCenterImage;
+    }
+
     public Image getActualImage(){
-        return images.get(indexOfCenterImage.intValue());
+        return images.get(indexOfCenterImage);
     }
 }

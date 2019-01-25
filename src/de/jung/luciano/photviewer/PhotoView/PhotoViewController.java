@@ -1,5 +1,8 @@
-package de.jung.luciano.photviewer;
+package de.jung.luciano.photviewer.PhotoView;
 
+import de.jung.luciano.photviewer.Main.Controller;
+import de.jung.luciano.photviewer.Diashow.DiashowController;
+import de.jung.luciano.photviewer.Model.Model;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
@@ -11,7 +14,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
-public class PhotoViewController {
+public class PhotoViewController implements Controller {
 
     //Model
     private Model model;
@@ -22,7 +25,7 @@ public class PhotoViewController {
     // constructor
     //++++++++++++++++++++++++++++++
 
-    protected PhotoViewController(Model model){
+    public PhotoViewController(Model model){
         //set model and view
         this.model = model;
         this.photoView = new PhotoView();
@@ -35,7 +38,8 @@ public class PhotoViewController {
     //Event Handler
     //++++++++++++++++++++++++++++++++
 
-    private void generateEventHandler(){
+    @Override
+    public void generateEventHandler(){
         //generates all EventHandlers for the PhotoView
         photoView.getMenuItemOpenFiles().setOnAction(event -> handleOpenFiles(event));
         photoView.getMenuItemExit().setOnAction(event -> System.exit(0));
@@ -66,12 +70,12 @@ public class PhotoViewController {
             }
         } catch (NullPointerException e){return;}                                                                       //return if no image is load
 
-        model.getIndexOfCenterImage().set(0);                                                                           //Center Image is First Image
+        model.setIndexOfCenterImage(0);                                                                           //Center Image is First Image
         loadImages();
     }
 
     private void handleDiashow(ActionEvent actionEvent) {
-        DiashowController diashowController = new DiashowController(model);                                             //create new Diashow Controller and give him the model
+        Controller diashowController = new DiashowController(model);                                             //create new Diashow Controller and give him the model
         diashowController.show();                                                                                       //show new Scene (Diashow)
     }
 
@@ -92,19 +96,19 @@ public class PhotoViewController {
 
     private void handleLeftArrow(ActionEvent actionEvent) {
         if (model.getImages().size() <= 0) return;                                                                      //if no Images load yet
-        int index = model.getIndexOfCenterImage().intValue();
+        int index = model.getIndexOfCenterImage();
         if (index <= 0)                                                                                                 //first image get previous => last image
             index = photoView.getImageViewListView().getItems().size();
-        model.getIndexOfCenterImage().set(--index);
+        model.setIndexOfCenterImage(--index);
         setCenterImage(model.getActualImage());
     }
 
     private void handleRightArrow(ActionEvent actionEvent) {
         if (model.getImages().size() <= 0) return;                                                                      //if no Images load yet
-        int index = model.getIndexOfCenterImage().intValue();
+        int index = model.getIndexOfCenterImage();
         if (index >= photoView.getImageViewListView().getItems().size()-1)                                              //last image get next => first image
             index = -1;
-        model.getIndexOfCenterImage().set(++index);
+        model.setIndexOfCenterImage(++index);
         setCenterImage(model.getActualImage());
     }
 
@@ -116,7 +120,8 @@ public class PhotoViewController {
     //other Methods
     //+++++++++++++++++++++++++++++
 
-    protected void show(){
+    @Override
+    public void show(){
         photoView.show(model.getPrimaryStage());                                                                        //show photoView on primaryStage got from model
     }
 
@@ -152,7 +157,7 @@ public class PhotoViewController {
          */
         for (int i = 0; i < model.getImages().size(); i++){
             if (!model.getImages().get(i).equals(image))continue;
-            model.getIndexOfCenterImage().set(i);
+            model.setIndexOfCenterImage(i);
             break;
         }
 

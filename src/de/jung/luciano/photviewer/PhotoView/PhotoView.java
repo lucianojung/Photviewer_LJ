@@ -1,4 +1,4 @@
-package de.jung.luciano.photviewer;
+package de.jung.luciano.photviewer.PhotoView;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
