@@ -1,9 +1,13 @@
-package de.jung.luciano.photviewer;
+package de.jung.luciano.photviewer.Diashow;
 
+import de.jung.luciano.photviewer.Diashow.Diashow;
+import de.jung.luciano.photviewer.Main.Controller;
+import de.jung.luciano.photviewer.Model.Model;
+import de.jung.luciano.photviewer.PhotoView.PhotoViewController;
 import javafx.event.ActionEvent;
 import static javafx.application.Platform.runLater;
 
-public class DiashowController {
+public class DiashowController implements Controller{
     //Model
     private Model model;
     //View
@@ -16,8 +20,8 @@ public class DiashowController {
     //++++++++++++++++++++++++++++++
     // constructor
     // ++++++++++++++++++++++++++++++
-    
-    protected DiashowController(Model model) {
+
+    public DiashowController(Model model) {
         this.model = model;
         this.diashowView = new Diashow();
         imageTask = new ImageTask();
@@ -33,7 +37,8 @@ public class DiashowController {
     // Event Handler
     // ++++++++++++++++++++++++++++++
 
-    private void generateEventHandler(){
+    @Override
+    public void generateEventHandler(){
         //generates all EventHandlers for the Diashow
         diashowView.getMenuItemPauseDiashow().setOnAction(event -> handlePauseDiashow(event));
         diashowView.getMenuItemStopDiashow().setOnAction(event -> handleStopDiashow(event));
@@ -56,7 +61,7 @@ public class DiashowController {
     //stops diahow via handlePause and return to photoviewer scene
     private void handleStopDiashow(ActionEvent event) {
         interruptDiashow();
-        PhotoViewController photoViewController = new PhotoViewController(model);       //give model to diashowController
+        Controller photoViewController = new PhotoViewController(model);       //give model to diashowController
         photoViewController.show();                                                     //show new Scene (Diashow)
     }
 
@@ -71,7 +76,8 @@ public class DiashowController {
     // other methods
     //++++++++++++++++++++++++++++++
 
-    protected void show() {
+    @Override
+    public void show() {
         /*
          * return if there are no Images -> you can show an Alert here if You want to informate the User
          *
@@ -107,14 +113,14 @@ public class DiashowController {
         @Override
         public void run() {
             /*
-            * try-catch because of Thread.sleep
-            * while (true), because the Diashow Can run forever
-            * sleep for X millis, got from model.diashowDuration
-            * set next ImageView:
-            *   -> set index ++
-            *   -> look if Last Image
-            *   -> call updateImage
-            */
+             * try-catch because of Thread.sleep
+             * while (true), because the Diashow Can run forever
+             * sleep for X millis, got from model.diashowDuration
+             * set next ImageView:
+             *   -> set index ++
+             *   -> look if Last Image
+             *   -> call updateImage
+             */
             try{
                 while (true){
                     Thread.sleep(model.getDiashowDuration());
@@ -126,20 +132,19 @@ public class DiashowController {
         }
 
         private void nextImage(){
-            model.getIndexOfCenterImage().set(model.getIndexOfCenterImage().intValue()+1);
-            if (model.getIndexOfCenterImage().intValue() == model.getImages().size())
-                model.getIndexOfCenterImage().set(0);
+            model.setIndexOfCenterImage((model.getIndexOfCenterImage()+1) % model.getImages().size());
             updateImage();
-            }
         }
+    }
 
-        //update Image method with runLater(Runnable)
-        private void updateImage()
-        {
-            runLater(new Runnable() {
+    //update Image method with runLater(Runnable)
+    private void updateImage()
+    {
+        runLater(new Runnable() {
             @Override public void run() {
                 diashowView.getImageView().setImage(model.getActualImage());
             }
         });
     }
 }
+

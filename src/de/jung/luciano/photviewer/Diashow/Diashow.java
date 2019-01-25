@@ -1,4 +1,4 @@
-package de.jung.luciano.photviewer;
+package de.jung.luciano.photviewer.Diashow;
 
 import javafx.geometry.Dimension2D;
 import javafx.scene.Scene;
