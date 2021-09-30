@@ -3,6 +3,8 @@
 This is an JavaFX Programm code in IntelliJ (Version: 2018.2.4, Java 10.0.2).
 You can let the Program show you images in a ListView and set one in the Center by clicking on it.
 You also can start a Diashow of all Pictures using the MenuBar.
+![PhotoviewerLJ](https://user-images.githubusercontent.com/33691403/135431197-bbc1eb93-1a51-4aef-ae0e-7f732692968f.JPG)
+
 
 This was a voluntery University Project.
 I practice using the MVC-Pattern, JavaFX Controls and reusable and clean Code.
